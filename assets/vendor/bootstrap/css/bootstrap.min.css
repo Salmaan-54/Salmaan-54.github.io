@@ -2096,7 +2096,7 @@ progress {
     color: var(--bs-table-striped-color)
 }
 
-.table-striped-colu>:not(caption)>tr>:nth-child(2n) {
+.table-striped-columns>:not(caption)>tr>:nth-child(2n) {
     --bs-table-accent-bg: var(--bs-table-striped-bg);
     color: var(--bs-table-striped-color)
 }
@@ -2507,7 +2507,7 @@ textarea.form-control-lg {
     height: calc(1.5em + 1rem + 2px)
 }
 
-.forelect {
+.form-select {
     display: block;
     width: 100%;
     padding: .375rem 2.25rem .375rem .75rem;
@@ -2530,33 +2530,33 @@ textarea.form-control-lg {
 }
 
 @media (prefers-reduced-motion:reduce) {
-    .forelect {
+    .form-select {
         transition: none
     }
 }
 
-.forelect:focus {
+.form-select:focus {
     border-color: #86b7fe;
     outline: 0;
     box-shadow: 0 0 0 .25rem rgba(13, 110, 253, .25)
 }
 
-.forelect[multiple],
-.forelect[size]:not([size="1"]) {
+.form-select[multiple],
+.form-select[size]:not([size="1"]) {
     padding-right: .75rem;
     background-image: none
 }
 
-.forelect:disabled {
+.form-select:disabled {
     background-color: #e9ecef
 }
 
-.forelect:-moz-focusring {
+.form-select:-moz-focusring {
     color: transparent;
     text-shadow: 0 0 0 #212529
 }
 
-.forelect-sm {
+.form-select-sm {
     padding-top: .25rem;
     padding-bottom: .25rem;
     padding-left: .5rem;
@@ -2564,7 +2564,7 @@ textarea.form-control-lg {
     border-radius: .25rem
 }
 
-.forelect-lg {
+.form-select-lg {
     padding-top: .5rem;
     padding-bottom: .5rem;
     padding-left: 1rem;
@@ -2663,11 +2663,11 @@ textarea.form-control-lg {
     opacity: .5
 }
 
-.forwitch {
+.form-switch {
     padding-left: 2.5em
 }
 
-.forwitch .form-check-input {
+.form-switch .form-check-input {
     width: 2em;
     margin-left: -2.5em;
     background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='rgba%280, 0, 0, 0.25%29'/%3e%3c/svg%3e");
@@ -2677,26 +2677,26 @@ textarea.form-control-lg {
 }
 
 @media (prefers-reduced-motion:reduce) {
-    .forwitch .form-check-input {
+    .form-switch .form-check-input {
         transition: none
     }
 }
 
-.forwitch .form-check-input:focus {
+.form-switch .form-check-input:focus {
     background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='%2386b7fe'/%3e%3c/svg%3e")
 }
 
-.forwitch .form-check-input:checked {
+.form-switch .form-check-input:checked {
     background-position: right center;
     background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='%23fff'/%3e%3c/svg%3e")
 }
 
-.forwitch.form-check-reverse {
+.form-switch.form-check-reverse {
     padding-right: 2.5em;
     padding-left: 0
 }
 
-.forwitch.form-check-reverse .form-check-input {
+.form-switch.form-check-reverse .form-check-input {
     margin-right: -2.5em;
     margin-left: 0
 }
@@ -2830,7 +2830,7 @@ textarea.form-control-lg {
 
 .form-floating>.form-control,
 .form-floating>.form-control-plaintext,
-.form-floating>.forelect {
+.form-floating>.form-select {
     height: calc(3.5rem + 2px);
     line-height: 1.25
 }
@@ -2893,7 +2893,7 @@ textarea.form-control-lg {
     padding-bottom: .625rem
 }
 
-.form-floating>.forelect {
+.form-floating>.form-select {
     padding-top: 1.625rem;
     padding-bottom: .625rem
 }
@@ -2906,7 +2906,7 @@ textarea.form-control-lg {
 .form-floating>.form-control-plaintext~label,
 .form-floating>.form-control:focus~label,
 .form-floating>.form-control:not(:placeholder-shown)~label,
-.form-floating>.forelect~label {
+.form-floating>.form-select~label {
     opacity: .65;
     transform: scale(.85) translateY(-.5rem) translateX(.15rem)
 }
@@ -2930,7 +2930,7 @@ textarea.form-control-lg {
 
 .input-group>.form-control,
 .input-group>.form-floating,
-.input-group>.forelect {
+.input-group>.form-select {
     position: relative;
     flex: 1 1 auto;
     width: 1%;
@@ -2939,7 +2939,7 @@ textarea.form-control-lg {
 
 .input-group>.form-control:focus,
 .input-group>.form-floating:focus-within,
-.input-group>.forelect:focus {
+.input-group>.form-select:focus {
     z-index: 5
 }
 
@@ -2969,7 +2969,7 @@ textarea.form-control-lg {
 
 .input-group-lg>.btn,
 .input-group-lg>.form-control,
-.input-group-lg>.forelect,
+.input-group-lg>.form-select,
 .input-group-lg>.input-group-text {
     padding: .5rem 1rem;
     font-size: 1.25rem;
@@ -2978,21 +2978,21 @@ textarea.form-control-lg {
 
 .input-group-sm>.btn,
 .input-group-sm>.form-control,
-.input-group-sm>.forelect,
+.input-group-sm>.form-select,
 .input-group-sm>.input-group-text {
     padding: .25rem .5rem;
     font-size: .875rem;
     border-radius: .25rem
 }
 
-.input-group-lg>.forelect,
-.input-group-sm>.forelect {
+.input-group-lg>.form-select,
+.input-group-sm>.form-select {
     padding-right: 3rem
 }
 
 .input-group:not(.has-validation)>.dropdown-toggle:nth-last-child(n+3),
 .input-group:not(.has-validation)>.form-floating:not(:last-child)>.form-control,
-.input-group:not(.has-validation)>.form-floating:not(:last-child)>.forelect,
+.input-group:not(.has-validation)>.form-floating:not(:last-child)>.form-select,
 .input-group:not(.has-validation)>:not(:last-child):not(.dropdown-toggle):not(.dropdown-menu):not(.form-floating) {
     border-top-right-radius: 0;
     border-bottom-right-radius: 0
@@ -3000,7 +3000,7 @@ textarea.form-control-lg {
 
 .input-group.has-validation>.dropdown-toggle:nth-last-child(n+4),
 .input-group.has-validation>.form-floating:nth-last-child(n+3)>.form-control,
-.input-group.has-validation>.form-floating:nth-last-child(n+3)>.forelect,
+.input-group.has-validation>.form-floating:nth-last-child(n+3)>.form-select,
 .input-group.has-validation>:nth-last-child(n+3):not(.dropdown-toggle):not(.dropdown-menu):not(.form-floating) {
     border-top-right-radius: 0;
     border-bottom-right-radius: 0
@@ -3013,7 +3013,7 @@ textarea.form-control-lg {
 }
 
 .input-group>.form-floating:not(:first-child)>.form-control,
-.input-group>.form-floating:not(:first-child)>.forelect {
+.input-group>.form-floating:not(:first-child)>.form-select {
     border-top-left-radius: 0;
     border-bottom-left-radius: 0
 }
@@ -3069,23 +3069,23 @@ textarea.form-control.is-valid {
     background-position: top calc(.375em + .1875rem) right calc(.375em + .1875rem)
 }
 
-.forelect.is-valid,
-.was-validated .forelect:valid {
+.form-select.is-valid,
+.was-validated .form-select:valid {
     border-color: #198754
 }
 
-.forelect.is-valid:not([multiple]):not([size]),
-.forelect.is-valid:not([multiple])[size="1"],
-.was-validated .forelect:valid:not([multiple]):not([size]),
-.was-validated .forelect:valid:not([multiple])[size="1"] {
+.form-select.is-valid:not([multiple]):not([size]),
+.form-select.is-valid:not([multiple])[size="1"],
+.was-validated .form-select:valid:not([multiple]):not([size]),
+.was-validated .form-select:valid:not([multiple])[size="1"] {
     padding-right: 4.125rem;
     background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e"), url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3e%3cpath fill='%23198754' d='M2.3 6.73.6 4.53c-.4-1.04.46-1.4 1.1-.8l1.1 1.4 3.4-3.8c.6-.63 1.6-.27 1.2.7l-4 4.6c-.43.5-.8.4-1.1.1z'/%3e%3c/svg%3e");
     background-position: right .75rem center, center right 2.25rem;
     background-size: 16px 12px, calc(.75em + .375rem) calc(.75em + .375rem)
 }
 
-.forelect.is-valid:focus,
-.was-validated .forelect:valid:focus {
+.form-select.is-valid:focus,
+.was-validated .form-select:valid:focus {
     border-color: #198754;
     box-shadow: 0 0 0 .25rem rgba(25, 135, 84, .25)
 }
@@ -3121,10 +3121,10 @@ textarea.form-control.is-valid {
 
 .input-group>.form-control:not(:focus).is-valid,
 .input-group>.form-floating:not(:focus-within).is-valid,
-.input-group>.forelect:not(:focus).is-valid,
+.input-group>.form-select:not(:focus).is-valid,
 .was-validated .input-group>.form-control:not(:focus):valid,
 .was-validated .input-group>.form-floating:not(:focus-within):valid,
-.was-validated .input-group>.forelect:not(:focus):valid {
+.was-validated .input-group>.form-select:not(:focus):valid {
     z-index: 3
 }
 
@@ -3179,23 +3179,23 @@ textarea.form-control.is-invalid {
     background-position: top calc(.375em + .1875rem) right calc(.375em + .1875rem)
 }
 
-.forelect.is-invalid,
-.was-validated .forelect:invalid {
+.form-select.is-invalid,
+.was-validated .form-select:invalid {
     border-color: #dc3545
 }
 
-.forelect.is-invalid:not([multiple]):not([size]),
-.forelect.is-invalid:not([multiple])[size="1"],
-.was-validated .forelect:invalid:not([multiple]):not([size]),
-.was-validated .forelect:invalid:not([multiple])[size="1"] {
+.form-select.is-invalid:not([multiple]):not([size]),
+.form-select.is-invalid:not([multiple])[size="1"],
+.was-validated .form-select:invalid:not([multiple]):not([size]),
+.was-validated .form-select:invalid:not([multiple])[size="1"] {
     padding-right: 4.125rem;
     background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e"), url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' width='12' height='12' fill='none' stroke='%23dc3545'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3e%3ccircle cx='6' cy='8.2' r='.6' fill='%23dc3545' stroke='none'/%3e%3c/svg%3e");
     background-position: right .75rem center, center right 2.25rem;
     background-size: 16px 12px, calc(.75em + .375rem) calc(.75em + .375rem)
 }
 
-.forelect.is-invalid:focus,
-.was-validated .forelect:invalid:focus {
+.form-select.is-invalid:focus,
+.was-validated .form-select:invalid:focus {
     border-color: #dc3545;
     box-shadow: 0 0 0 .25rem rgba(220, 53, 69, .25)
 }
@@ -3231,10 +3231,10 @@ textarea.form-control.is-invalid {
 
 .input-group>.form-control:not(:focus).is-invalid,
 .input-group>.form-floating:not(:focus-within).is-invalid,
-.input-group>.forelect:not(:focus).is-invalid,
+.input-group>.form-select:not(:focus).is-invalid,
 .was-validated .input-group>.form-control:not(:focus):invalid,
 .was-validated .input-group>.form-floating:not(:focus-within):invalid,
-.was-validated .input-group>.forelect:not(:focus):invalid {
+.was-validated .input-group>.form-select:not(:focus):invalid {
     z-index: 4
 }
 
@@ -3706,10 +3706,10 @@ fieldset:disabled .btn {
     margin-left: .255em;
     vertical-align: .255em;
     content: "";
-    border-top: .3eolid;
-    border-right: .3eolid transparent;
+    border-top: .3em solid;
+    border-right: .3em solid transparent;
     border-bottom: 0;
-    border-left: .3eolid transparent
+    border-left: .3em solid transparent
 }
 
 .dropdown-toggle:empty::after {
@@ -3784,11 +3784,11 @@ fieldset:disabled .btn {
 }
 
 @media (min-width:576px) {
-    .dropdown-menu-start {
+    .dropdown-menu-sm-start {
         --bs-position: start
     }
 
-    .dropdown-menu-start[data-bs-popper] {
+    .dropdown-menu-sm-start[data-bs-popper] {
         right: auto;
         left: 0
     }
@@ -3896,9 +3896,9 @@ fieldset:disabled .btn {
     vertical-align: .255em;
     content: "";
     border-top: 0;
-    border-right: .3eolid transparent;
-    border-bottom: .3eolid;
-    border-left: .3eolid transparent
+    border-right: .3em solid transparent;
+    border-bottom: .3em solid;
+    border-left: .3em solid transparent
 }
 
 .dropup .dropdown-toggle:empty::after {
@@ -3918,10 +3918,10 @@ fieldset:disabled .btn {
     margin-left: .255em;
     vertical-align: .255em;
     content: "";
-    border-top: .3eolid transparent;
+    border-top: .3em solid transparent;
     border-right: 0;
-    border-bottom: .3eolid transparent;
-    border-left: .3eolid
+    border-bottom: .3em solid transparent;
+    border-left: .3em solid
 }
 
 .dropend .dropdown-toggle:empty::after {
@@ -3956,9 +3956,9 @@ fieldset:disabled .btn {
     margin-right: .255em;
     vertical-align: .255em;
     content: "";
-    border-top: .3eolid transparent;
-    border-right: .3eolid;
-    border-bottom: .3eolid transparent
+    border-top: .3em solid transparent;
+    border-right: .3em solid;
+    border-bottom: .3em solid transparent
 }
 
 .dropstart .dropdown-toggle:empty::after {
@@ -4032,7 +4032,7 @@ fieldset:disabled .btn {
 
 .dropdown-menu-dark {
     --bs-dropdown-color: #dee2e6;
-    --bs-dropdown-bg: #2e3192;
+    --bs-dropdown-bg: #674cae;
     --bs-dropdown-border-color: var(--bs-border-color-translucent);
     --bs-dropdown-box-shadow: ;
     --bs-dropdown-link-color: #dee2e6;
@@ -4234,7 +4234,7 @@ fieldset:disabled .btn {
     border-color: transparent
 }
 
-.nav-tabs .nav-itehow .nav-link,
+.nav-tabs .nav-item.show .nav-link,
 .nav-tabs .nav-link.active {
     color: var(--bs-nav-tabs-link-active-color);
     background-color: var(--bs-nav-tabs-link-active-bg);
@@ -5332,11 +5332,11 @@ fieldset:disabled .btn {
     font-weight: 700
 }
 
-.alert-dissible {
+.alert-dismissible {
     padding-right: 3rem
 }
 
-.alert-dissible .btn-close {
+.alert-dismissible .btn-close {
     position: absolute;
     top: 0;
     right: 0;
@@ -5424,7 +5424,7 @@ fieldset:disabled .btn {
     color: #101214
 }
 
-@keyfra progress-bar-stripes {
+@keyframes progress-bar-stripes {
     0% {
         background-position-x: 1rem
     }
@@ -5784,35 +5784,35 @@ fieldset:disabled .btn {
     border-color: #084298
 }
 
-.list-group-iteecondary {
+.list-group-item-secondary {
     color: #41464b;
     background-color: #e2e3e5
 }
 
-.list-group-iteecondary.list-group-item-action:focus,
-.list-group-iteecondary.list-group-item-action:hover {
+.list-group-item-secondary.list-group-item-action:focus,
+.list-group-item-secondary.list-group-item-action:hover {
     color: #41464b;
     background-color: #cbccce
 }
 
-.list-group-iteecondary.list-group-item-action.active {
+.list-group-item-secondary.list-group-item-action.active {
     color: #fff;
     background-color: #41464b;
     border-color: #41464b
 }
 
-.list-group-iteuccess {
+.list-group-item-success {
     color: #0f5132;
     background-color: #d1e7dd
 }
 
-.list-group-iteuccess.list-group-item-action:focus,
-.list-group-iteuccess.list-group-item-action:hover {
+.list-group-item-success.list-group-item-action:focus,
+.list-group-item-success.list-group-item-action:hover {
     color: #0f5132;
     background-color: #bcd0c7
 }
 
-.list-group-iteuccess.list-group-item-action.active {
+.list-group-item-success.list-group-item-action.active {
     color: #fff;
     background-color: #0f5132;
     border-color: #0f5132
@@ -6696,11 +6696,11 @@ fieldset:disabled .btn {
 }
 
 .active.carousel-item-end,
-.carousel-item-next:not(.carousel-itetart) {
+.carousel-item-next:not(.carousel-item-start) {
     transform: translateX(100%)
 }
 
-.active.carousel-itetart,
+.active.carousel-item-start,
 .carousel-item-prev:not(.carousel-item-end) {
     transform: translateX(-100%)
 }
@@ -6711,7 +6711,7 @@ fieldset:disabled .btn {
     transform: none
 }
 
-.carousel-fade .carousel-item-next.carousel-itetart,
+.carousel-fade .carousel-item-next.carousel-item-start,
 .carousel-fade .carousel-item-prev.carousel-item-end,
 .carousel-fade .carousel-item.active {
     z-index: 1;
@@ -6719,7 +6719,7 @@ fieldset:disabled .btn {
 }
 
 .carousel-fade .active.carousel-item-end,
-.carousel-fade .active.carousel-itetart {
+.carousel-fade .active.carousel-item-start {
     z-index: 0;
     opacity: 0;
     transition: opacity 0s .6s
@@ -6728,7 +6728,7 @@ fieldset:disabled .btn {
 @media (prefers-reduced-motion:reduce) {
 
     .carousel-fade .active.carousel-item-end,
-    .carousel-fade .active.carousel-itetart {
+    .carousel-fade .active.carousel-item-start {
         transition: none
     }
 }
@@ -6874,7 +6874,7 @@ fieldset:disabled .btn {
     animation: var(--bs-spinner-animation-speed) linear infinite var(--bs-spinner-animation-name)
 }
 
-@keyfra spinner-border {
+@keyframes spinner-border {
     to {
         transform: rotate(360deg)
     }
@@ -6897,7 +6897,7 @@ fieldset:disabled .btn {
     --bs-spinner-border-width: 0.2em
 }
 
-@keyfra spinner-grow {
+@keyframes spinner-grow {
     0% {
         transform: scale(0)
     }
@@ -7017,8 +7017,8 @@ fieldset:disabled .btn {
 
 @media (max-width:575.98px) {
 
-    .offcanvas-show:not(.hiding),
-    .offcanvas-showing {
+    .offcanvas-sm.show:not(.hiding),
+    .offcanvas-sm.showing {
         transform: none
     }
 }
@@ -7026,8 +7026,8 @@ fieldset:disabled .btn {
 @media (max-width:575.98px) {
 
     .offcanvas-sm.hiding,
-    .offcanvas-show,
-    .offcanvas-showing {
+    .offcanvas-sm.show,
+    .offcanvas-sm.showing {
         visibility: visible
     }
 }
@@ -7604,24 +7604,24 @@ fieldset:disabled .btn {
     animation: placeholder-glow 2s ease-in-out infinite
 }
 
-@keyfra placeholder-glow {
+@keyframes placeholder-glow {
     50% {
         opacity: .2
     }
 }
 
 .placeholder-wave {
-    -webkit-k-image: linear-gradient(130deg, #000 55%, rgba(0, 0, 0, 0.8) 75%, #000 95%);
-    k-image: linear-gradient(130deg, #000 55%, rgba(0, 0, 0, 0.8) 75%, #000 95%);
-    -webkit-k-size: 200% 100%;
-    k-size: 200% 100%;
+    -webkit-mask-image: linear-gradient(130deg, #000 55%, rgba(0, 0, 0, 0.8) 75%, #000 95%);
+    mask-image: linear-gradient(130deg, #000 55%, rgba(0, 0, 0, 0.8) 75%, #000 95%);
+    -webkit-mask-size: 200% 100%;
+    mask-size: 200% 100%;
     animation: placeholder-wave 2s linear infinite
 }
 
-@keyfra placeholder-wave {
+@keyframes placeholder-wave {
     100% {
-        -webkit-k-position: -200% 0%;
-        k-position: -200% 0%
+        -webkit-mask-position: -200% 0%;
+        mask-position: -200% 0%
     }
 }
 
@@ -9315,7 +9315,7 @@ fieldset:disabled .btn {
 }
 
 @media (min-width:576px) {
-    .float-start {
+    .float-sm-start {
         float: left !important
     }
 
@@ -9395,11 +9395,11 @@ fieldset:disabled .btn {
         flex-grow: 1 !important
     }
 
-    .flex-shrink-0 {
+    .flex-sm-shrink-0 {
         flex-shrink: 0 !important
     }
 
-    .flex-shrink-1 {
+    .flex-sm-shrink-1 {
         flex-shrink: 1 !important
     }
 
@@ -9415,7 +9415,7 @@ fieldset:disabled .btn {
         flex-wrap: wrap-reverse !important
     }
 
-    .justify-content-start {
+    .justify-content-sm-start {
         justify-content: flex-start !important
     }
 
@@ -9439,7 +9439,7 @@ fieldset:disabled .btn {
         justify-content: space-evenly !important
     }
 
-    .align-items-start {
+    .align-items-sm-start {
         align-items: flex-start !important
     }
 
@@ -9455,11 +9455,11 @@ fieldset:disabled .btn {
         align-items: baseline !important
     }
 
-    .align-items-stretch {
+    .align-items-sm-stretch {
         align-items: stretch !important
     }
 
-    .align-content-start {
+    .align-content-sm-start {
         align-content: flex-start !important
     }
 
@@ -9479,7 +9479,7 @@ fieldset:disabled .btn {
         align-content: space-around !important
     }
 
-    .align-content-stretch {
+    .align-content-sm-stretch {
         align-content: stretch !important
     }
 
@@ -9487,7 +9487,7 @@ fieldset:disabled .btn {
         align-self: auto !important
     }
 
-    .align-self-start {
+    .align-self-sm-start {
         align-self: flex-start !important
     }
 
@@ -9503,7 +9503,7 @@ fieldset:disabled .btn {
         align-self: baseline !important
     }
 
-    .align-self-stretch {
+    .align-self-sm-stretch {
         align-self: stretch !important
     }
 
@@ -9539,31 +9539,31 @@ fieldset:disabled .btn {
         order: 6 !important
     }
 
-    .m-0 {
+    .m-sm-0 {
         margin: 0 !important
     }
 
-    .m-1 {
+    .m-sm-1 {
         margin: .25rem !important
     }
 
-    .m-2 {
+    .m-sm-2 {
         margin: .5rem !important
     }
 
-    .m-3 {
+    .m-sm-3 {
         margin: 1rem !important
     }
 
-    .m-4 {
+    .m-sm-4 {
         margin: 1.5rem !important
     }
 
-    .m-5 {
+    .m-sm-5 {
         margin: 3rem !important
     }
 
-    .m-auto {
+    .m-sm-auto {
         margin: auto !important
     }
 
@@ -9953,7 +9953,7 @@ fieldset:disabled .btn {
         gap: 3rem !important
     }
 
-    .text-start {
+    .text-sm-start {
         text-align: left !important
     }
 

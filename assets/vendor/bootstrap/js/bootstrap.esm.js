@@ -296,7 +296,7 @@ const executeAfterTransition = (callback, transitionElement, waitForTransition =
  *
  * @param {array} list    The list of elements
  * @param activeElement   The active element
- * @parahouldGetNext   Choose to get next or previous element
+ * @param shouldGetNext   Choose to get next or previous element
  * @param isCycleAllowed
  * @return {Element|elem} The proper element
  */
@@ -330,7 +330,7 @@ const getNextActiveElement = (list, activeElement, shouldGetNext, isCycleAllowed
  * Constants
  */
 
-const napaceRegex = /[^.]*(?=\..*)\.|.*/;
+const namespaceRegex = /[^.]*(?=\..*)\.|.*/;
 const stripNameRegex = /\..*/;
 const stripUidRegex = /::\d+$/;
 const eventRegistry = {}; // Events storage
@@ -442,7 +442,7 @@ function addHandler(element, originalTypeEvent, handler, delegationFunction, one
     return;
   }
 
-  const uid = makeEventUid(callable, originalTypeEvent.replace(napaceRegex, ''));
+  const uid = makeEventUid(callable, originalTypeEvent.replace(namespaceRegex, ''));
   const fn = isDelegated ? bootstrapDelegationHandler(element, handler, callable) : bootstrapHandler(element, callable);
   fn.delegationSelector = isDelegated ? handler : null;
   fn.callable = callable;
@@ -463,11 +463,11 @@ function removeHandler(element, events, typeEvent, handler, delegationSelector) 
   delete events[typeEvent][fn.uidEvent];
 }
 
-function removeNapacedHandlers(element, events, typeEvent, napace) {
+function removeNamespacedHandlers(element, events, typeEvent, namespace) {
   const storeElementEvent = events[typeEvent] || {};
 
   for (const handlerKey of Object.keys(storeElementEvent)) {
-    if (handlerKey.includes(napace)) {
+    if (handlerKey.includes(namespace)) {
       const event = storeElementEvent[handlerKey];
       removeHandler(element, events, typeEvent, event.callable, event.delegationSelector);
     }
@@ -475,7 +475,7 @@ function removeNapacedHandlers(element, events, typeEvent, napace) {
 }
 
 function getTypeEvent(event) {
-  // allow to get the native events from napaced events ('click.bs.button' --> 'click')
+  // allow to get the native events from namespaced events ('click.bs.button' --> 'click')
   event = event.replace(stripNameRegex, '');
   return customEvents[event] || event;
 }
@@ -495,10 +495,10 @@ const EventHandler = {
     }
 
     const [isDelegated, callable, typeEvent] = normalizeParameters(originalTypeEvent, handler, delegationFunction);
-    const inNapace = typeEvent !== originalTypeEvent;
+    const inNamespace = typeEvent !== originalTypeEvent;
     const events = getElementEvents(element);
     const storeElementEvent = events[typeEvent] || {};
-    const isNapace = originalTypeEvent.startsWith('.');
+    const isNamespace = originalTypeEvent.startsWith('.');
 
     if (typeof callable !== 'undefined') {
       // Simplest case: handler is passed, remove that listener ONLY.
@@ -510,16 +510,16 @@ const EventHandler = {
       return;
     }
 
-    if (isNapace) {
+    if (isNamespace) {
       for (const elementEvent of Object.keys(events)) {
-        removeNapacedHandlers(element, events, elementEvent, originalTypeEvent.slice(1));
+        removeNamespacedHandlers(element, events, elementEvent, originalTypeEvent.slice(1));
       }
     }
 
     for (const keyHandlers of Object.keys(storeElementEvent)) {
       const handlerKey = keyHandlers.replace(stripUidRegex, '');
 
-      if (!inNapace || originalTypeEvent.includes(handlerKey)) {
+      if (!inNamespace || originalTypeEvent.includes(handlerKey)) {
         const event = storeElementEvent[keyHandlers];
         removeHandler(element, events, typeEvent, event.callable, event.delegationSelector);
       }
@@ -533,13 +533,13 @@ const EventHandler = {
 
     const $ = getjQuery();
     const typeEvent = getTypeEvent(event);
-    const inNapace = event !== typeEvent;
+    const inNamespace = event !== typeEvent;
     let jQueryEvent = null;
     let bubbles = true;
     let nativeDispatch = true;
     let defaultPrevented = false;
 
-    if (inNapace && $) {
+    if (inNamespace && $) {
       jQueryEvent = $.Event(event, args);
       $(element).trigger(jQueryEvent);
       bubbles = !jQueryEvent.isPropagationStopped();
@@ -806,7 +806,7 @@ class BaseComponent extends Config {
     Data.remove(this._element, this.constructor.DATA_KEY);
     EventHandler.off(this._element, this.constructor.EVENT_KEY);
 
-    for (const propertyName of Object.getOwnPropertyNa(this)) {
+    for (const propertyName of Object.getOwnPropertyNames(this)) {
       this[propertyName] = null;
     }
   }
@@ -858,10 +858,10 @@ class BaseComponent extends Config {
  * --------------------------------------------------------------------------
  */
 
-const enableDissTrigger = (component, method = 'hide') => {
-  const clickEvent = `click.diss${component.EVENT_KEY}`;
+const enableDismissTrigger = (component, method = 'hide') => {
+  const clickEvent = `click.dismiss${component.EVENT_KEY}`;
   const name = component.NAME;
-  EventHandler.on(document, clickEvent, `[data-bs-diss="${name}"]`, function (event) {
+  EventHandler.on(document, clickEvent, `[data-bs-dismiss="${name}"]`, function (event) {
     if (['A', 'AREA'].includes(this.tagName)) {
       event.preventDefault();
     }
@@ -950,7 +950,7 @@ class Alert extends BaseComponent {
  */
 
 
-enableDissTrigger(Alert, 'close');
+enableDismissTrigger(Alert, 'close');
 /**
  * jQuery
  */
@@ -1021,7 +1021,7 @@ defineJQueryPlugin(Button);
 
 /**
  * --------------------------------------------------------------------------
- * Bootstrap (v5.2.2): doelector-engine.js
+ * Bootstrap (v5.2.2): dom/selector-engine.js
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  * --------------------------------------------------------------------------
  */
@@ -1260,7 +1260,7 @@ const CLASS_NAME_CAROUSEL = 'carousel';
 const CLASS_NAME_ACTIVE$2 = 'active';
 const CLASS_NAME_SLIDE = 'slide';
 const CLASS_NAME_END = 'carousel-item-end';
-const CLASS_NAME_START = 'carousel-itetart';
+const CLASS_NAME_START = 'carousel-item-start';
 const CLASS_NAME_NEXT = 'carousel-item-next';
 const CLASS_NAME_PREV = 'carousel-item-prev';
 const SELECTOR_ACTIVE = '.active';
@@ -2005,8 +2005,8 @@ const SELECTOR_NAVBAR_NAV = '.navbar-nav';
 const SELECTOR_VISIBLE_ITEMS = '.dropdown-menu .dropdown-item:not(.disabled):not(:disabled)';
 const PLACEMENT_TOP = isRTL() ? 'top-end' : 'top-start';
 const PLACEMENT_TOPEND = isRTL() ? 'top-start' : 'top-end';
-const PLACEMENT_BOTTOM = isRTL() ? 'bottom-end' : 'bottotart';
-const PLACEMENT_BOTTOMEND = isRTL() ? 'bottotart' : 'bottom-end';
+const PLACEMENT_BOTTOM = isRTL() ? 'bottom-end' : 'bottom-start';
+const PLACEMENT_BOTTOMEND = isRTL() ? 'bottom-start' : 'bottom-end';
 const PLACEMENT_RIGHT = isRTL() ? 'left-start' : 'right-start';
 const PLACEMENT_LEFT = isRTL() ? 'right-start' : 'left-start';
 const PLACEMENT_TOPCENTER = 'top';
@@ -2791,9 +2791,9 @@ const EVENT_HIDDEN$4 = `hidden${EVENT_KEY$4}`;
 const EVENT_SHOW$4 = `show${EVENT_KEY$4}`;
 const EVENT_SHOWN$4 = `shown${EVENT_KEY$4}`;
 const EVENT_RESIZE$1 = `resize${EVENT_KEY$4}`;
-const EVENT_CLICK_DISS = `click.diss${EVENT_KEY$4}`;
-const EVENT_MOUSEDOWN_DISS = `mousedown.diss${EVENT_KEY$4}`;
-const EVENT_KEYDOWN_DISS$1 = `keydown.diss${EVENT_KEY$4}`;
+const EVENT_CLICK_DISMISS = `click.dismiss${EVENT_KEY$4}`;
+const EVENT_MOUSEDOWN_DISMISS = `mousedown.dismiss${EVENT_KEY$4}`;
+const EVENT_KEYDOWN_DISMISS$1 = `keydown.dismiss${EVENT_KEY$4}`;
 const EVENT_CLICK_DATA_API$2 = `click${EVENT_KEY$4}${DATA_API_KEY$2}`;
 const CLASS_NAME_OPEN = 'modal-open';
 const CLASS_NAME_FADE$3 = 'fade';
@@ -2965,7 +2965,7 @@ class Modal extends BaseComponent {
   }
 
   _addEventListeners() {
-    EventHandler.on(this._element, EVENT_KEYDOWN_DISS$1, event => {
+    EventHandler.on(this._element, EVENT_KEYDOWN_DISMISS$1, event => {
       if (event.key !== ESCAPE_KEY$1) {
         return;
       }
@@ -2983,9 +2983,9 @@ class Modal extends BaseComponent {
         this._adjustDialog();
       }
     });
-    EventHandler.on(this._element, EVENT_MOUSEDOWN_DISS, event => {
+    EventHandler.on(this._element, EVENT_MOUSEDOWN_DISMISS, event => {
       // a bad trick to segregate clicks that may start inside dialog but end outside, and avoid listen to scrollbar clicks
-      EventHandler.one(this._element, EVENT_CLICK_DISS, event2 => {
+      EventHandler.one(this._element, EVENT_CLICK_DISMISS, event2 => {
         if (this._element !== event.target || this._element !== event2.target) {
           return;
         }
@@ -3139,7 +3139,7 @@ EventHandler.on(document, EVENT_CLICK_DATA_API$2, SELECTOR_DATA_TOGGLE$2, functi
   const data = Modal.getOrCreateInstance(target);
   data.toggle(this);
 });
-enableDissTrigger(Modal);
+enableDismissTrigger(Modal);
 /**
  * jQuery
  */
@@ -3174,7 +3174,7 @@ const EVENT_HIDE_PREVENTED = `hidePrevented${EVENT_KEY$3}`;
 const EVENT_HIDDEN$3 = `hidden${EVENT_KEY$3}`;
 const EVENT_RESIZE = `resize${EVENT_KEY$3}`;
 const EVENT_CLICK_DATA_API$1 = `click${EVENT_KEY$3}${DATA_API_KEY$1}`;
-const EVENT_KEYDOWN_DISS = `keydown.diss${EVENT_KEY$3}`;
+const EVENT_KEYDOWN_DISMISS = `keydown.dismiss${EVENT_KEY$3}`;
 const SELECTOR_DATA_TOGGLE$1 = '[data-bs-toggle="offcanvas"]';
 const Default$5 = {
   backdrop: true,
@@ -3337,7 +3337,7 @@ class Offcanvas extends BaseComponent {
   }
 
   _addEventListeners() {
-    EventHandler.on(this._element, EVENT_KEYDOWN_DISS, event => {
+    EventHandler.on(this._element, EVENT_KEYDOWN_DISMISS, event => {
       if (event.key !== ESCAPE_KEY) {
         return;
       }
@@ -3413,7 +3413,7 @@ EventHandler.on(window, EVENT_RESIZE, () => {
     }
   }
 });
-enableDissTrigger(Offcanvas);
+enableDismissTrigger(Offcanvas);
 /**
  * jQuery
  */
@@ -4741,7 +4741,7 @@ class Tab extends BaseComponent {
     // Shows this elem and deactivate the active sibling if exists
     const innerElem = this._element;
 
-    if (this._eleActive(innerElem)) {
+    if (this._elemIsActive(innerElem)) {
       return;
     } // Search for active tab on same parent to deactivate it
 
@@ -4849,7 +4849,7 @@ class Tab extends BaseComponent {
   }
 
   _getActiveElem() {
-    return this._getChildren().find(child => this._eleActive(child)) || null;
+    return this._getChildren().find(child => this._elemIsActive(child)) || null;
   }
 
   _setInitialAttributes(parent, children) {
@@ -4863,7 +4863,7 @@ class Tab extends BaseComponent {
   _setInitialAttributesOnChild(child) {
     child = this._getInnerElement(child);
 
-    const isActive = this._eleActive(child);
+    const isActive = this._elemIsActive(child);
 
     const outerElem = this._getOuterElement(child);
 
@@ -4914,7 +4914,7 @@ class Tab extends BaseComponent {
 
     toggle(SELECTOR_DROPDOWN_TOGGLE, CLASS_NAME_ACTIVE);
     toggle(SELECTOR_DROPDOWN_MENU, CLASS_NAME_SHOW$1);
-    outerEleetAttribute('aria-expanded', open);
+    outerElem.setAttribute('aria-expanded', open);
   }
 
   _setAttributeIfNotExists(element, attribute, value) {
@@ -4923,7 +4923,7 @@ class Tab extends BaseComponent {
     }
   }
 
-  _eleActive(elem) {
+  _elemIsActive(elem) {
     return elem.classList.contains(CLASS_NAME_ACTIVE);
   } // Try to get the inner element (usually the .nav-link)
 
@@ -5200,7 +5200,7 @@ class Toast extends BaseComponent {
  */
 
 
-enableDissTrigger(Toast);
+enableDismissTrigger(Toast);
 /**
  * jQuery
  */

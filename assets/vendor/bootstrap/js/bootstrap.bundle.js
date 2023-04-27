@@ -300,7 +300,7 @@
    *
    * @param {array} list    The list of elements
    * @param activeElement   The active element
-   * @parahouldGetNext   Choose to get next or previous element
+   * @param shouldGetNext   Choose to get next or previous element
    * @param isCycleAllowed
    * @return {Element|elem} The proper element
    */
@@ -334,7 +334,7 @@
    * Constants
    */
 
-  const napaceRegex = /[^.]*(?=\..*)\.|.*/;
+  const namespaceRegex = /[^.]*(?=\..*)\.|.*/;
   const stripNameRegex = /\..*/;
   const stripUidRegex = /::\d+$/;
   const eventRegistry = {}; // Events storage
@@ -446,7 +446,7 @@
       return;
     }
 
-    const uid = makeEventUid(callable, originalTypeEvent.replace(napaceRegex, ''));
+    const uid = makeEventUid(callable, originalTypeEvent.replace(namespaceRegex, ''));
     const fn = isDelegated ? bootstrapDelegationHandler(element, handler, callable) : bootstrapHandler(element, callable);
     fn.delegationSelector = isDelegated ? handler : null;
     fn.callable = callable;
@@ -467,11 +467,11 @@
     delete events[typeEvent][fn.uidEvent];
   }
 
-  function removeNapacedHandlers(element, events, typeEvent, napace) {
+  function removeNamespacedHandlers(element, events, typeEvent, namespace) {
     const storeElementEvent = events[typeEvent] || {};
 
     for (const handlerKey of Object.keys(storeElementEvent)) {
-      if (handlerKey.includes(napace)) {
+      if (handlerKey.includes(namespace)) {
         const event = storeElementEvent[handlerKey];
         removeHandler(element, events, typeEvent, event.callable, event.delegationSelector);
       }
@@ -479,7 +479,7 @@
   }
 
   function getTypeEvent(event) {
-    // allow to get the native events from napaced events ('click.bs.button' --> 'click')
+    // allow to get the native events from namespaced events ('click.bs.button' --> 'click')
     event = event.replace(stripNameRegex, '');
     return customEvents[event] || event;
   }
@@ -499,10 +499,10 @@
       }
 
       const [isDelegated, callable, typeEvent] = normalizeParameters(originalTypeEvent, handler, delegationFunction);
-      const inNapace = typeEvent !== originalTypeEvent;
+      const inNamespace = typeEvent !== originalTypeEvent;
       const events = getElementEvents(element);
       const storeElementEvent = events[typeEvent] || {};
-      const isNapace = originalTypeEvent.startsWith('.');
+      const isNamespace = originalTypeEvent.startsWith('.');
 
       if (typeof callable !== 'undefined') {
         // Simplest case: handler is passed, remove that listener ONLY.
@@ -514,16 +514,16 @@
         return;
       }
 
-      if (isNapace) {
+      if (isNamespace) {
         for (const elementEvent of Object.keys(events)) {
-          removeNapacedHandlers(element, events, elementEvent, originalTypeEvent.slice(1));
+          removeNamespacedHandlers(element, events, elementEvent, originalTypeEvent.slice(1));
         }
       }
 
       for (const keyHandlers of Object.keys(storeElementEvent)) {
         const handlerKey = keyHandlers.replace(stripUidRegex, '');
 
-        if (!inNapace || originalTypeEvent.includes(handlerKey)) {
+        if (!inNamespace || originalTypeEvent.includes(handlerKey)) {
           const event = storeElementEvent[keyHandlers];
           removeHandler(element, events, typeEvent, event.callable, event.delegationSelector);
         }
@@ -537,13 +537,13 @@
 
       const $ = getjQuery();
       const typeEvent = getTypeEvent(event);
-      const inNapace = event !== typeEvent;
+      const inNamespace = event !== typeEvent;
       let jQueryEvent = null;
       let bubbles = true;
       let nativeDispatch = true;
       let defaultPrevented = false;
 
-      if (inNapace && $) {
+      if (inNamespace && $) {
         jQueryEvent = $.Event(event, args);
         $(element).trigger(jQueryEvent);
         bubbles = !jQueryEvent.isPropagationStopped();
@@ -810,7 +810,7 @@
       Data.remove(this._element, this.constructor.DATA_KEY);
       EventHandler.off(this._element, this.constructor.EVENT_KEY);
 
-      for (const propertyName of Object.getOwnPropertyNa(this)) {
+      for (const propertyName of Object.getOwnPropertyNames(this)) {
         this[propertyName] = null;
       }
     }
@@ -862,10 +862,10 @@
    * --------------------------------------------------------------------------
    */
 
-  const enableDissTrigger = (component, method = 'hide') => {
-    const clickEvent = `click.diss${component.EVENT_KEY}`;
+  const enableDismissTrigger = (component, method = 'hide') => {
+    const clickEvent = `click.dismiss${component.EVENT_KEY}`;
     const name = component.NAME;
-    EventHandler.on(document, clickEvent, `[data-bs-diss="${name}"]`, function (event) {
+    EventHandler.on(document, clickEvent, `[data-bs-dismiss="${name}"]`, function (event) {
       if (['A', 'AREA'].includes(this.tagName)) {
         event.preventDefault();
       }
@@ -954,7 +954,7 @@
    */
 
 
-  enableDissTrigger(Alert, 'close');
+  enableDismissTrigger(Alert, 'close');
   /**
    * jQuery
    */
@@ -1025,7 +1025,7 @@
 
   /**
    * --------------------------------------------------------------------------
-   * Bootstrap (v5.2.2): doelector-engine.js
+   * Bootstrap (v5.2.2): dom/selector-engine.js
    * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
    * --------------------------------------------------------------------------
    */
@@ -1264,7 +1264,7 @@
   const CLASS_NAME_ACTIVE$2 = 'active';
   const CLASS_NAME_SLIDE = 'slide';
   const CLASS_NAME_END = 'carousel-item-end';
-  const CLASS_NAME_START = 'carousel-itetart';
+  const CLASS_NAME_START = 'carousel-item-start';
   const CLASS_NAME_NEXT = 'carousel-item-next';
   const CLASS_NAME_PREV = 'carousel-item-prev';
   const SELECTOR_ACTIVE = '.active';
@@ -2048,7 +2048,7 @@
 
       if (!isHTMLElement(element) || !getNodeName(element)) {
         return;
-      } // Flow doesn't support to extend this property, but it's the t
+      } // Flow doesn't support to extend this property, but it's the most
       // effective way to apply styles to an HTMLElement
       // $FlowFixMe[cannot-write]
 
@@ -2212,14 +2212,14 @@
 
     if (parent.contains(child)) {
       return true;
-    } // then fallback to custom implementation with Shadow DOupport
+    } // then fallback to custom implementation with Shadow DOM support
     else if (rootNode && isShadowRoot(rootNode)) {
         var next = child;
 
         do {
           if (next && parent.isSameNode(next)) {
             return true;
-          } // $FlowFixMe[prop-sing]: need a better way to handle this...
+          } // $FlowFixMe[prop-missing]: need a better way to handle this...
 
 
           next = next.parentNode || next.host;
@@ -2240,7 +2240,7 @@
 
   function getDocumentElement(element) {
     // $FlowFixMe[incompatible-return]: assume body is always available
-    return ((isElement(element) ? element.ownerDocument : // $FlowFixMe[prop-sing]
+    return ((isElement(element) ? element.ownerDocument : // $FlowFixMe[prop-missing]
     element.document) || window.document).documentElement;
   }
 
@@ -2251,7 +2251,7 @@
 
     return (// this is a quicker (but less type safe) way to save quite some bytes from the bundle
       // $FlowFixMe[incompatible-return]
-      // $FlowFixMe[prop-sing]
+      // $FlowFixMe[prop-missing]
       element.assignedSlot || // step into the shadow DOM of the parent of a slotted node
       element.parentNode || ( // DOM Element detected
       isShadowRoot(element) ? element.host : null) || // ShadowRoot detected
@@ -2292,7 +2292,7 @@
     }
 
     while (isHTMLElement(currentNode) && ['html', 'body'].indexOf(getNodeName(currentNode)) < 0) {
-      var css = getComputedStyle$1(currentNode); // This is non-exhaustive but covers the t common CSS properties that
+      var css = getComputedStyle$1(currentNode); // This is non-exhaustive but covers the most common CSS properties that
       // create a containing block.
       // https://developer.mozilla.org/en-US/docs/Web/CSS/Containing_block#identifying_the_containing_block
 
@@ -2514,7 +2514,7 @@
 
       if (placement === top || (placement === left || placement === right) && variation === end) {
         sideY = bottom;
-        var offsetY = isFixed && offsetParent === win && win.visualViewport ? win.visualViewport.height : // $FlowFixMe[prop-sing]
+        var offsetY = isFixed && offsetParent === win && win.visualViewport ? win.visualViewport.height : // $FlowFixMe[prop-missing]
         offsetParent[heightProp];
         y -= offsetY - popperRect.height;
         y *= gpuAcceleration ? 1 : -1;
@@ -2522,7 +2522,7 @@
 
       if (placement === left || (placement === top || placement === bottom) && variation === end) {
         sideX = right;
-        var offsetX = isFixed && offsetParent === win && win.visualViewport ? win.visualViewport.width : // $FlowFixMe[prop-sing]
+        var offsetX = isFixed && offsetParent === win && win.visualViewport ? win.visualViewport.width : // $FlowFixMe[prop-missing]
         offsetParent[widthProp];
         x -= offsetX - popperRect.width;
         x *= gpuAcceleration ? 1 : -1;
@@ -3276,7 +3276,7 @@
         name = _ref.name;
     // Offsets are the actual position the popper needs to have to be
     // properly positioned near its reference element
-    // This is the t basic placement, and will be adjusted by
+    // This is the most basic placement, and will be adjusted by
     // the modifiers in the next step
     state.modifiersData[name] = computeOffsets({
       reference: state.rects.reference,
@@ -3542,8 +3542,8 @@
     var pending;
     return function () {
       if (!pending) {
-        pending = new Proe(function (resolve) {
-          Proe.resolve().then(function () {
+        pending = new Promise(function (resolve) {
+          Promise.resolve().then(function () {
             pending = undefined;
             resolve(fn());
           });
@@ -3660,7 +3660,7 @@
             reference: getCompositeRect(reference, getOffsetParent(popper), state.options.strategy === 'fixed'),
             popper: getLayoutRect(popper)
           }; // Modifiers have the ability to reset the current update cycle. The
-          // t common use case for this is the `flip` modifier changing the
+          // most common use case for this is the `flip` modifier changing the
           // placement, which then needs to re-run all the modifiers, because the
           // logic was previously ran for the previous placement and is therefore
           // stale/incorrect
@@ -3699,10 +3699,10 @@
             }
           }
         },
-        // Async and optitically optimized update – it will not be executed if
-        // not necessary (debounced to run at t once-per-tick)
+        // Async and optimistically optimized update – it will not be executed if
+        // not necessary (debounced to run at most once-per-tick)
         update: debounce(function () {
-          return new Proe(function (resolve) {
+          return new Promise(function (resolve) {
             instance.forceUpdate();
             resolve(state);
           });
@@ -3855,8 +3855,8 @@
   const SELECTOR_VISIBLE_ITEMS = '.dropdown-menu .dropdown-item:not(.disabled):not(:disabled)';
   const PLACEMENT_TOP = isRTL() ? 'top-end' : 'top-start';
   const PLACEMENT_TOPEND = isRTL() ? 'top-start' : 'top-end';
-  const PLACEMENT_BOTTOM = isRTL() ? 'bottom-end' : 'bottotart';
-  const PLACEMENT_BOTTOMEND = isRTL() ? 'bottotart' : 'bottom-end';
+  const PLACEMENT_BOTTOM = isRTL() ? 'bottom-end' : 'bottom-start';
+  const PLACEMENT_BOTTOMEND = isRTL() ? 'bottom-start' : 'bottom-end';
   const PLACEMENT_RIGHT = isRTL() ? 'left-start' : 'right-start';
   const PLACEMENT_LEFT = isRTL() ? 'right-start' : 'left-start';
   const PLACEMENT_TOPCENTER = 'top';
@@ -4641,9 +4641,9 @@
   const EVENT_SHOW$4 = `show${EVENT_KEY$4}`;
   const EVENT_SHOWN$4 = `shown${EVENT_KEY$4}`;
   const EVENT_RESIZE$1 = `resize${EVENT_KEY$4}`;
-  const EVENT_CLICK_DISS = `click.diss${EVENT_KEY$4}`;
-  const EVENT_MOUSEDOWN_DISS = `mousedown.diss${EVENT_KEY$4}`;
-  const EVENT_KEYDOWN_DISS$1 = `keydown.diss${EVENT_KEY$4}`;
+  const EVENT_CLICK_DISMISS = `click.dismiss${EVENT_KEY$4}`;
+  const EVENT_MOUSEDOWN_DISMISS = `mousedown.dismiss${EVENT_KEY$4}`;
+  const EVENT_KEYDOWN_DISMISS$1 = `keydown.dismiss${EVENT_KEY$4}`;
   const EVENT_CLICK_DATA_API$2 = `click${EVENT_KEY$4}${DATA_API_KEY$2}`;
   const CLASS_NAME_OPEN = 'modal-open';
   const CLASS_NAME_FADE$3 = 'fade';
@@ -4815,7 +4815,7 @@
     }
 
     _addEventListeners() {
-      EventHandler.on(this._element, EVENT_KEYDOWN_DISS$1, event => {
+      EventHandler.on(this._element, EVENT_KEYDOWN_DISMISS$1, event => {
         if (event.key !== ESCAPE_KEY$1) {
           return;
         }
@@ -4833,9 +4833,9 @@
           this._adjustDialog();
         }
       });
-      EventHandler.on(this._element, EVENT_MOUSEDOWN_DISS, event => {
+      EventHandler.on(this._element, EVENT_MOUSEDOWN_DISMISS, event => {
         // a bad trick to segregate clicks that may start inside dialog but end outside, and avoid listen to scrollbar clicks
-        EventHandler.one(this._element, EVENT_CLICK_DISS, event2 => {
+        EventHandler.one(this._element, EVENT_CLICK_DISMISS, event2 => {
           if (this._element !== event.target || this._element !== event2.target) {
             return;
           }
@@ -4989,7 +4989,7 @@
     const data = Modal.getOrCreateInstance(target);
     data.toggle(this);
   });
-  enableDissTrigger(Modal);
+  enableDismissTrigger(Modal);
   /**
    * jQuery
    */
@@ -5024,7 +5024,7 @@
   const EVENT_HIDDEN$3 = `hidden${EVENT_KEY$3}`;
   const EVENT_RESIZE = `resize${EVENT_KEY$3}`;
   const EVENT_CLICK_DATA_API$1 = `click${EVENT_KEY$3}${DATA_API_KEY$1}`;
-  const EVENT_KEYDOWN_DISS = `keydown.diss${EVENT_KEY$3}`;
+  const EVENT_KEYDOWN_DISMISS = `keydown.dismiss${EVENT_KEY$3}`;
   const SELECTOR_DATA_TOGGLE$1 = '[data-bs-toggle="offcanvas"]';
   const Default$5 = {
     backdrop: true,
@@ -5187,7 +5187,7 @@
     }
 
     _addEventListeners() {
-      EventHandler.on(this._element, EVENT_KEYDOWN_DISS, event => {
+      EventHandler.on(this._element, EVENT_KEYDOWN_DISMISS, event => {
         if (event.key !== ESCAPE_KEY) {
           return;
         }
@@ -5263,7 +5263,7 @@
       }
     }
   });
-  enableDissTrigger(Offcanvas);
+  enableDismissTrigger(Offcanvas);
   /**
    * jQuery
    */
@@ -6591,7 +6591,7 @@
       // Shows this elem and deactivate the active sibling if exists
       const innerElem = this._element;
 
-      if (this._eleActive(innerElem)) {
+      if (this._elemIsActive(innerElem)) {
         return;
       } // Search for active tab on same parent to deactivate it
 
@@ -6699,7 +6699,7 @@
     }
 
     _getActiveElem() {
-      return this._getChildren().find(child => this._eleActive(child)) || null;
+      return this._getChildren().find(child => this._elemIsActive(child)) || null;
     }
 
     _setInitialAttributes(parent, children) {
@@ -6713,7 +6713,7 @@
     _setInitialAttributesOnChild(child) {
       child = this._getInnerElement(child);
 
-      const isActive = this._eleActive(child);
+      const isActive = this._elemIsActive(child);
 
       const outerElem = this._getOuterElement(child);
 
@@ -6764,7 +6764,7 @@
 
       toggle(SELECTOR_DROPDOWN_TOGGLE, CLASS_NAME_ACTIVE);
       toggle(SELECTOR_DROPDOWN_MENU, CLASS_NAME_SHOW$1);
-      outerEleetAttribute('aria-expanded', open);
+      outerElem.setAttribute('aria-expanded', open);
     }
 
     _setAttributeIfNotExists(element, attribute, value) {
@@ -6773,7 +6773,7 @@
       }
     }
 
-    _eleActive(elem) {
+    _elemIsActive(elem) {
       return elem.classList.contains(CLASS_NAME_ACTIVE);
     } // Try to get the inner element (usually the .nav-link)
 
@@ -7050,7 +7050,7 @@
    */
 
 
-  enableDissTrigger(Toast);
+  enableDismissTrigger(Toast);
   /**
    * jQuery
    */
