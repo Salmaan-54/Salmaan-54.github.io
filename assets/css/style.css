@@ -385,6 +385,7 @@ General Section
   .features-text h2 {
     font-size: 2rem;
     color: var(--primary-color);
+    text-align: center;
   }
 }
 
@@ -394,7 +395,7 @@ General Section
 
 @media (min-width: 1200px) {
   .features-text p {
-    font-size: 1rem;
+    font-size: 1.5rem;
     text-align: justify;
     color: #000000;
     font-family: sans-serif;
@@ -1179,7 +1180,7 @@ TEAM CARDS
 
 .section-tea .header-section .title {
   font-weight: 700;
-  font-size: 45px;
+  font-size: 32px;
 }
 
 .section-tea .single-person {
@@ -1428,4 +1429,13 @@ OUR RECRUITER
   100% {
     transform: translatex(-1000%);
   }
+}
+
+.disp{
+  border-radius: 16px;
+  height:auto;
+  width:95%;
+  display: block;
+  margin-left: auto;
+  margin-right: auto; 
 }
